@@ -1,8 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 function Greeting(props) {
   return <h2>Hello, {props.name}!</h2>;
+}
+function StudentList() {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/students')
+      .then(res => res.json())
+      .then(data => setStudents(data));
+  }, []);
+
+  return (
+    <div>
+      <h2>Students from Backend</h2>
+      <ul>
+        {students.map((s, i) => (
+          <li key={i}>{s.name} - {s.course}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 function App() {
   return (
@@ -23,7 +43,8 @@ function App() {
       </header>
       <Greeting name="Dhanya" />
 <Greeting name="Anu" />
-<TodoList />
+      <StudentList />
+      <TodoList />
     </div>
   );
 }
